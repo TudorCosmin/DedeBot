@@ -1,0 +1,2 @@
+# DedeBot
+RebelDot AI hackaton
