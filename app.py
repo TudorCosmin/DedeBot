@@ -11,10 +11,9 @@ async def on_chat_start():
 
 @cl.on_message
 async def on_message(message: cl.Message):
-    runnable = cast(Runnable, cl.user_session.get("runnable"))  # type: Runnable
-
+    runnable = cast(Runnable, cl.user_session.get("runnable"))
     msg = cl.Message(content="")
-
+    
     async for chunk in runnable.astream(
         {"question": message.content},
         config=RunnableConfig(callbacks=[cl.LangchainCallbackHandler()]),
