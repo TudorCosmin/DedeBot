@@ -1,0 +1,5 @@
+# this needs to be updated with freezed versions
+python-dotenv
+langchain_openai
+langchain_community
+qdrant-client
