@@ -4,6 +4,8 @@ langchain_openai
 langchain_community
 qdrant-client
 chainlit
+langchain_qdrant
+lark
 attrs==24.2.0
 certifi==2024.8.30
 charset-normalizer==3.4.0
