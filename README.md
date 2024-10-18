@@ -83,3 +83,80 @@ This function cleans and formats JSON files in a specified folder by removing pr
 ```bash
 python3 clean_and_stringify_json_files('data')
 ```
+
+
+
+
+## scrape_links Function
+
+### Overview
+
+This script automates the process of scraping product details from the Dedeman website across multiple product categories using Selenium WebDriver. It captures product titles, links, images, and prices, and saves the data in a structured JSON file.
+
+### Features
+
+- **Scrape product details:** Retrieves essential information such as product title, price, image URL, and product link.
+- **Scroll to load more content:** Automatically scrolls the webpage to load additional content and capture all available products.
+- **Cookie handling:** Automatically accepts cookies if a popup is present.
+- **Multiple categories support:** Can scrape multiple categories and multiple pages within each category.
+- **Error handling:** Graceful handling of missing or incomplete product information without breaking the scraping process.
+
+### Requirements
+
+To run the script, you need the following:
+
+- Python 3.x
+- Selenium (for web automation)
+- ChromeDriver (Ensure the path is correctly set for your operating system)
+- Chrome Browser (in regular or headless mode)
+
+### Installation
+
+1. Clone the repository:
+
+    ```bash
+    git clone https://github.com/yourusername/your-repository.git
+    cd your-repository
+    ```
+
+2. Install the required Python dependencies:
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+    This will install:
+    - Selenium
+    - `webdriver_manager` (for automatically managing the ChromeDriver)
+
+3. Ensure you have the **ChromeDriver** executable installed and set the correct path in the script.
+
+### Usage
+
+Run the script using:
+
+```bash
+python scrape_links.py
+```
+
+The script will scrape product details from multiple categories and save the results into a JSON file (`dedeman_products.json`).
+
+### JSON Output Format
+
+The output file (`dedeman_products.json`) will store product information in the following format:
+
+```json
+{
+    "Category1": [
+        {"title": "Product1", "link": "URL1", "image": "imageURL1"},
+        {"title": "Product2", "link": "URL2", "image": "imageURL2"}
+    ],
+    "Category2": [
+        {"title": "Product3", "link": "URL3", "image": "imageURL3"}
+    ]
+}
+```
+
+### Error Handling
+* If any errors occur during scraping, the script will log the error and continue scraping the remaining products or categories.
+* A screenshot of any page where errors occur will be saved for debugging (`error_screenshot.png`).
