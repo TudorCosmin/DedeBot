@@ -1,5 +1,38 @@
 # DedeBot
-RebelDot AI hackaton
+
+
+## Overview of the Project
+
+This project implements a chatbot for Dedeman.ro, a leading construction materials and home improvement site in Romania. The chatbot is designed to assist users by providing human-like responses to free-form text queries, recommending relevant products based on user input and the chat history. Acting as a virtual product advisor, the chatbot offers personalized suggestions tailored to user preferences, project requirements, and specific needs.
+
+In addition to product recommendations, the chatbot can also answer a comprehensive list of Frequently Asked Questions (FAQs), covering a wide range of topics related to products and services. Its goal is to create a friendly, interactive customer experience, combining useful product insights with natural, conversational responses.
+
+The chatbot is focused on delivering helpful product recommendations, ensuring it remains responsive to the user's needs while avoiding questions unrelated to products, such as delivery schedules or store hours.
+
+## Getting Started to run the chatbot
+
+Install Python 3.9.
+
+Create a virtual environment in the root folder:
+
+```
+python -m venv .venv
+```
+If Python 3 is not default on the system, the command may be `python3`.
+
+Activate the virtual environment and install the dependencies:
+```
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+## Running the Chatbot
+
+To start the chatbot, use the following command in the root directory:
+
+```
+chainlit run app.py
+```
 
 
 ## scraping_page Function
