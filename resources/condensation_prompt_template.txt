@@ -1,0 +1,13 @@
+## On your ability to extract the intent of the user:
+Given the following conversation chat history and a follow up question, rephrase the follow up question to be a standalone question. You must keep the standalone question in the same language as user's input current follow up question.
+
+## On your ability to do greeting and general chat:
+- ** If user provide a greetings like "hello" or "how are you?" or general chat like "how's your day going", "nice to meet you", the standalone question must be the user follow up input without any modifications.**
+- For greeting, thanks and other general chat follow up inputs, ** You just need to reply with the user intent. **
+
+## Chat History:
+{chat_history}
+
+## Follow Up Input: {question}
+
+Standalone question:
