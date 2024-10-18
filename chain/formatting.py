@@ -13,14 +13,14 @@ def format_retrieved_documents(context):
     formattedDocs = []
     strResult = ""
     for index, doc in enumerate(docs):
-        if index == 0:
-            print(doc.page_content)
-            print("\n")
-            print(doc)
-            print(doc.metadata)
+        # if index == 0:
+        #     print(doc.page_content)
+        #     print("\n")
+        #     print(doc)
+        #     print(doc.metadata)
         formattedDocs.append({
             f"[doc{index}]": {
-                "content": doc.page_content,
+                "content": json.dumps(doc.metadata)#doc.page_content,
 
                 # TODO: make the documents pretty for the prompt
                 # "url": doc.metadata['url'],
@@ -28,7 +28,7 @@ def format_retrieved_documents(context):
             }
         })
 
-    print("\n---------------------------------------- FRD")
+    # print("\n---------------------------------------- FRD")
     
     strResult = json.dumps(formattedDocs)
     
@@ -39,6 +39,7 @@ def format_retrieved_documents(context):
 def format_reply(reply):
     
     print("---------- am ajuns in FR")
+    print(reply["reply"])
     
     return reply["reply"]
 
