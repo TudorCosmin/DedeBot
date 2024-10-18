@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from chain.formatting import format_retrieved_documents, format_reply, format_chat_history, format_product_output
+from chain.formatting import format_retrieved_documents, format_reply, format_chat_history, format_product_output, ex_retrieved_documents1, ex_retrieved_documents2
 
 embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 collection_name = "dedeman-screws-collection4" # os.environ["QDRANT_COLLECTION_NAME"]
@@ -86,8 +86,8 @@ _retrieval_context = {
 _answer_prompt_params = {
     "context": _retrieval_context | RunnableLambda(format_retrieved_documents),
     "question": lambda x: x["standalone_question"],
-    # "retrieved_documents": ex_retrieved_documents,
-    # "retrieved_documents2": ex_retrieved_documents2,
+    "ex_retrieved_documents1": ex_retrieved_documents1,
+    "ex_retrieved_documents2": ex_retrieved_documents2,
 }
 
 history_chain = ({
