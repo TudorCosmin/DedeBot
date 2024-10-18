@@ -6,58 +6,25 @@ from langchain_community.vectorstores import Qdrant
 from langchain.schema import Document
 from typing import List, Dict, Any
 from tqdm import tqdm
-from qdrant_client.http import models as qdrant_models
-from qdrant_client import QdrantClient
 
 load_dotenv()
-
-
-
-def upload_docs_to_qdrant(docs: List[Document], collection_name: str) -> None:
-    embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
-    
-    # qclient = QdrantClient(
-    #     url=os.environ['QDRANT_HOST'], 
-    #     api_key=os.environ["QDRANT_API_KEY"]
-    # )
-    
-    # embedding_size = 1536 # len(embeddings.embed_query("test"))
-    # qclient.create_collection(
-    #     collection_name=collection_name,
-    #     vectors_config=qdrant_models.VectorParams(
-    #         size=embedding_size,
-    #         distance=qdrant_models.Distance.EUCLID
-    #     )
-    # )
-    
-    vectorstore = Qdrant.from_documents(
-        documents=docs,
-        embedding=embeddings,
-        url=os.environ['QDRANT_HOST'],
-        api_key=os.environ["QDRANT_API_KEY"],
-        collection_name=collection_name,
-        # distance_func="EUCLID"
-    )
-# def upload_docs_to_qdrant(docs: List[Document], collection_name: str) -> None:
-#     embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
-
-#     vectorstore = Qdrant.from_documents(
-#         documents=docs,
-#         embedding=embeddings,
-#         url=os.environ['QDRANT_HOST'],
-#         api_key=os.environ["QDRANT_API_KEY"],
-#         collection_name=collection_name,
-#         vector_params={
-#             "size": 1536,
-#             "distance": qdrant_models.Distance.EUCLID
-#         }
-#     )
 
 def read_json(input_path: str) -> Dict[str, Any]:
     with open(input_path, 'r', encoding='utf-8') as file:
         data = json.load(file)
     print(len(data))
     return data
+
+def upload_docs_to_qdrant(docs: List[Document], collection_name: str) -> None:
+    embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+    
+    vectorstore = Qdrant.from_documents(
+        documents=docs,
+        embedding=embeddings,
+        url=os.environ["QDRANT_HOST"],
+        api_key=os.environ["QDRANT_API_KEY"],
+        collection_name=collection_name,
+    )
 
 def format_product(product_info, exclude_keys=["link", "image"]):
     result = []
@@ -109,5 +76,3 @@ def run_qdrant_upload(input_folderpath="data_screws", collection_name="dedeman-s
 
 if __name__ == "__main__":
     run_qdrant_upload()
-
-    # print(os.environ['OPENAI_API_KEY'])

@@ -6,10 +6,8 @@ from langchain.retrievers import SelfQueryRetriever
 from langchain.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnableLambda, RunnableMap
 from langchain_core.output_parsers import StrOutputParser
-from langchain_core.runnables import RunnablePassthrough
 from langchain.chains.query_constructor.base import AttributeInfo
 from operator import itemgetter
-from qdrant_client.http import models as qdrant_models
 
 from dotenv import load_dotenv
 
@@ -18,7 +16,7 @@ load_dotenv()
 from chain.formatting import format_retrieved_documents, format_reply, format_chat_history, format_product_output, ex_retrieved_documents1, ex_retrieved_documents2
 
 embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
-collection_name = "dedeman-screws-collection4" # os.environ["QDRANT_COLLECTION_NAME"]
+collection_name = "dedeman-screws-collection4"
 answer_template_path = "resources/answer_prompt_template.txt"
 condensation_template_path = "resources/condensation_prompt_template.txt"
 top_k = 10
@@ -32,8 +30,7 @@ vectorstore = QdrantVectorStore.from_existing_collection(
     embedding=embeddings,
     collection_name=collection_name,
     url=os.environ["QDRANT_HOST"],
-    api_key=os.environ["QDRANT_API_KEY"],
-    # distance=qdrant_models.Distance.EUCLID#"EUCLID"
+    api_key=os.environ["QDRANT_API_KEY"]
 )
 
 llm = ChatOpenAI(model_name="gpt-4o", temperature=0)
@@ -61,6 +58,7 @@ retriever = SelfQueryRetriever.from_llm(
     search_kwargs={'k':top_k}
 )
 
+# Loading the prompts
 with open(answer_template_path, "r") as f:
     _answer_template = f.read()
 ANSWER_PROMPT = ChatPromptTemplate.from_template(_answer_template)
@@ -84,27 +82,14 @@ _retrieval_context = {
 }
 
 _answer_prompt_params = {
-    "context": _retrieval_context | RunnableLambda(format_retrieved_documents),
+    # "context": _retrieval_context | RunnableLambda(format_retrieved_documents),
+    "context": itemgetter("standalone_question") | retriever | RunnableLambda(format_retrieved_documents),
     "question": lambda x: x["standalone_question"],
     "ex_retrieved_documents1": ex_retrieved_documents1,
     "ex_retrieved_documents2": ex_retrieved_documents2,
 }
 
 history_chain = ({
-    "query": lambda x: x["question"], # RunnablePassthrough(),
+    "query": lambda x: x["question"],
     "reply": _condensation | _answer_prompt_params | ANSWER_PROMPT | llm | StrOutputParser()
 } | RunnableLambda(format_reply))
-
-# _answer_prompt_params = {
-#     "context": retriever | format_retrieved_documents,
-#     "question": RunnablePassthrough()
-# }
-
-# rag_chain = ( {
-#     "query": RunnablePassthrough(), #lambda x: x["question"],
-#     "reply": _answer_prompt_params | ANSWER_PROMPT | llm | StrOutputParser()
-# } | RunnableLambda(format_reply))
-
-# testing
-# response = rag_chain.invoke("surub")
-# print(response)
