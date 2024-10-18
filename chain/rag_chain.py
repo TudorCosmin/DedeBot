@@ -9,15 +9,16 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain.chains.query_constructor.base import AttributeInfo
 from operator import itemgetter
+from qdrant_client.http import models as qdrant_models
 
 from dotenv import load_dotenv
 
 load_dotenv()
 
-from chain.formatting import format_retrieved_documents, format_reply, format_chat_history
+from chain.formatting import format_retrieved_documents, format_reply, format_chat_history, format_product_output
 
 embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
-collection_name = "dedeman-collection2" # os.environ["QDRANT_COLLECTION_NAME"]
+collection_name = "dedeman-screws-collection4" # os.environ["QDRANT_COLLECTION_NAME"]
 answer_template_path = "resources/answer_prompt_template.txt"
 condensation_template_path = "resources/condensation_prompt_template.txt"
 top_k = 10
@@ -29,9 +30,10 @@ qclient = qdrant_client.QdrantClient(
 
 vectorstore = QdrantVectorStore.from_existing_collection(
     embedding=embeddings,
-    collection_name=os.environ["QDRANT_COLLECTION_NAME"],
+    collection_name=collection_name,
     url=os.environ["QDRANT_HOST"],
     api_key=os.environ["QDRANT_API_KEY"],
+    # distance=qdrant_models.Distance.EUCLID#"EUCLID"
 )
 
 llm = ChatOpenAI(model_name="gpt-4o", temperature=0)
